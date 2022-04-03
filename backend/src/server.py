@@ -3,6 +3,7 @@ import shutil
 from os.path import exists
 from fastapi.responses import FileResponse
 from fastapi import FastAPI, File, UploadFile
+from image-preprocess import preprocess
 
 app = FastAPI()
 
@@ -19,6 +20,7 @@ def convertImage(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     # Convert Image here
+    preprocess(filePath)
 
     # return converted image
     return FileResponse(filePath, media_type="image/jpeg")
