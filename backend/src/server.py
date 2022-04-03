@@ -3,7 +3,7 @@ import shutil
 from os.path import exists
 from fastapi.responses import FileResponse
 from fastapi import FastAPI, File, UploadFile
-from image-preprocess import preprocess
+from preprocessimage import preprocess
 
 app = FastAPI()
 
