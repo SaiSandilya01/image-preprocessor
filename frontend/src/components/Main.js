@@ -4,6 +4,7 @@ const Main = () => {
 	const fileRef = useRef();
 	const [file, setFile] = useState();
 	const [objectURL, setObjectURL] = useState();
+	const [convertedImageObjectURL, setConvertedImageObjectURL] = useState();
 
 	useEffect(() => {
 		const createObjURL = () => {
@@ -37,19 +38,16 @@ const Main = () => {
 				const convertedImageObjectURL = URL.createObjectURL(imageBlob);
 
 				// use this object url to download it
-				console.log(convertedImageObjectURL);
+				setConvertedImageObjectURL(convertedImageObjectURL);
 			})
 			.catch((err) => console.log(err));
 	};
 
 	return (
-		// TODO: Optimize for all screens
-		<div className="p-2">
-			<div>
+		<div className="p-2 md:flex flex-col md:w-full justify-around items-start md:flex-row">
+			<div className="mx-5 md:w-full">
 				<div className="border border-dashed rounded flex flex-col p-2 justify-around items-center border-blue-400">
-					<h1 className="text-2xl font-bold uppercase mb-5">
-						Upload your image here
-					</h1>
+					<h1 className="text-2xl font-bold uppercase mb-5">Upload Image</h1>
 
 					{objectURL && <img src={objectURL} alt="img-to-upload" />}
 
@@ -58,7 +56,7 @@ const Main = () => {
 							className="p-2 bg-blue-400 text-white rounded-md cursor-pointer my-3"
 							onClick={() => fileRef.current.click()}
 						>
-							Select File
+							Select Image
 						</button>
 					) : (
 						<div>
@@ -66,16 +64,17 @@ const Main = () => {
 								className="p-2 bg-blue-400 text-white rounded-md cursor-pointer my-3"
 								onClick={handleUpload}
 							>
-								Upload File
+								Upload
 							</button>
 							<button
 								className="p-2 bg--400 text-white bg-red-500 rounded-md cursor-pointer mx-3"
 								onClick={() => {
 									setFile(null);
 									setObjectURL(null);
+									setConvertedImageObjectURL(null);
 								}}
 							>
-								Delete File
+								Delete
 							</button>
 						</div>
 					)}
@@ -90,9 +89,21 @@ const Main = () => {
 					/>
 				</div>
 			</div>
-			{/* <div>
-				<div></div>
-			</div> */}
+			{convertedImageObjectURL && (
+				<div className="mx-5 md:w-full">
+					<div className="border border-dashed rounded flex flex-col p-2 justify-around items-center border-blue-400">
+						<h1 className="text-2xl font-bold uppercase mb-5">
+							Converted Image
+						</h1>
+						<img src={convertedImageObjectURL} alt="preprocessed-img" />
+						<a href={convertedImageObjectURL} download>
+							<button className="p-2 bg-blue-400 text-white rounded-md cursor-pointer my-3">
+								Download
+							</button>
+						</a>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };
